@@ -1,0 +1,14 @@
+[Unit]
+Description=Android Logs
+
+[Service]
+ExecStart=/usr/bin/android-logs
+KillMode=process
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+# This service file runs sets up /dev/log for Android / libhybris

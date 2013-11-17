@@ -1,0 +1,6 @@
+#!/bin/bash
+/system/vendor/bin/pvrsrvctl --start --no-module &
+/system/bin/mediaserver &
+/system/bin/servicemanager &
+exit
+

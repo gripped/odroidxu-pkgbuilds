@@ -1,0 +1,15 @@
+[Unit]
+Description=Android Hybris Support
+After=android-log-setup.service
+Requires=android-log-setup.service
+
+[Service]
+ExecStart=/usr/bin/hybris-support
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+# This service file runs libhybris Android support programs (mediaserver, servicemanager & pvrsrvctl)

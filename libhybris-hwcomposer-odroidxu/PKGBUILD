@@ -1,0 +1,47 @@
+# Maintainer: Georges Discry <georges at discry dot be>
+# Modifier; gripped - forum.odroid.com
+
+
+pkgname=libhybris-hwcomposer-odroidxu
+pkgver=1
+pkgrel=2
+_gitname=hybris
+pkgdesc="Use bionic-based HW adaptations in glibc systems"
+arch=('armv7h')
+url=""
+#options=('!libtool')
+license=('MIT')
+depends=('linux-odroid-xu-hybris')
+provides=('libhybris-hwcomposer-odroidxu')
+source=('git+https://github.com/vamanea/hybris.git'
+	'system.tar.xz'
+	'android-hybris-support.service'
+	'android-log-setup.service'
+	'hybris-support'
+	'android-logs'
+	'10-pvr.rules')
+md5sums=('SKIP'
+         'c6850724629f51e69c8f117c594c7b6d'
+         'c53da16827e00ba8da9a834db27b5b0d'
+         '11bc32ee37aea575cf443e2053a49788'
+         '49452b06b179956f3fff62bf63437d1f'
+         '391cb3c38e4f77d6d906bede06bc30e2'
+         'a878341f15591ff568f0dbb331a2811b')
+         
+build() {
+  cd "${srcdir}/${_gitname}/hybris"
+  ./autogen.sh --prefix=/usr --with-default-egl-platform=hwcomposer
+  make 
+}
+
+
+package() {
+  cd "${srcdir}/${_gitname}/hybris"
+  make -j1 DESTDIR="${pkgdir}" install
+  cp -av "${srcdir}/system" ${pkgdir}/system
+  install -Dm644 ${srcdir}/android-hybris-support.service ${pkgdir}/usr/lib/systemd/system/android-hybris-support.service
+  install -Dm644 ${srcdir}/android-log-setup.service ${pkgdir}/usr/lib/systemd/system/android-log-setup.service 
+  install -Dm755 ${srcdir}/android-logs ${pkgdir}/usr/bin/android-logs
+  install -Dm755 ${srcdir}/hybris-support ${pkgdir}/usr/bin/hybris-support
+  install -Dm755 ${srcdir}/10-pvr.rules ${pkgdir}/etc/udev/rules.d/10-pvr.rules
+}

@@ -1,0 +1,10 @@
+#!/bin/bash
+[ ! -L /vendor ] && ln -s /system/vendor /vendor
+rm /dev/log
+mkdir /dev/log /dev/graphics
+ln -s /dev/log_main /dev/log/main
+ln -s /dev/log_system /dev/log/system
+ln -s /dev/log_events /dev/log/events
+ln -s /dev/log_radio /dev/log/radio
+ln -s /dev/fb0 /dev/graphics/fb0
+
