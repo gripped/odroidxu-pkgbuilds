@@ -10,8 +10,8 @@
 
 pkgbase=mesa-noegl
 pkgname=('mesa-noegl' 'mesa-libgl')
-pkgver=9.2.2
-pkgrel=1
+pkgver=9.2.3
+pkgrel=4
 arch=('armv7h')
 makedepends=('python2' 'libxml2' 'libx11' 'glproto' 'libdrm' 'dri2proto' 'libxxf86vm' 'libxdamage'
              'libvdpau' 'wayland' 'elfutils' 'llvm' 'systemd')
@@ -20,7 +20,7 @@ license=('custom')
 options=('!libtool')
 source=(ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/MesaLib-${pkgver}.tar.bz2
         LICENSE)
-md5sums=('20887f8020db7d1736a01ae9cd5d8c38'
+md5sums=('f56b6beb556e4b9072814419f7c554e3'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
@@ -61,8 +61,8 @@ package_mesa-noegl() {
   depends=('libdrm' 'libvdpau' 'wayland' 'libxxf86vm' 'libxdamage' 'systemd' 'elfutils' 'llvm-libs')
   optdepends=('opengl-man-pages: for the OpenGL API man pages')
   provides=('mesa' 'libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
-  conflicts=('libglapi' 'osmesa' 'libgbm')
-  replaces=('mesa' 'libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
+  conflicts=('mesa' 'libglapi' 'osmesa' 'libgbm')
+  replaces=('libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
 
   mv -v ${srcdir}/fakeinstall/* ${pkgdir}
   # rename libgl.so to not conflict with blobs - may break gl.pc ?
