@@ -31,7 +31,6 @@ optdepends=('libcec: support for Pulse-Eight USB-CEC adapter'
             'xorg-xinit: autostart xbmc')
 provides=('xbmc')
 conflicts=('xbmc' 'xbmc-libhybris-frodo')
-replaces=('xbmc' 'xbmc-libhybris-frodo')
 install="${pkgname}.install"
 source=('git://github.com/mdrjr/xbmc.git#branch=odroid-hybris'
 	'android-libs.tar.gz'
