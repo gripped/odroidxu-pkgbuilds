@@ -21,9 +21,8 @@ depends=(
       'v4l-utils' 'x264' 'xvidcore' 'zlib'
       )
 makedepends=('libvdpau' 'yasm')
-replaces=('ffmpeg')
 conflicts=('ffmpeg')
-provides=('ffmpeg')
+provides=('ffmpeg=${pkgver}')
 source=(http://ffmpeg.org/releases/$downname-$pkgver.tar.bz2
         ffmpeg-2.1-avformat-http.fix-cookies.patch)
 sha256sums=('926603fd974e9b38071a5cfc6fd0d93857801d1968145dfce7fdc627ab1d68df'

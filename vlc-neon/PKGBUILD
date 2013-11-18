@@ -12,9 +12,8 @@ pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player"
 arch=('i686' 'x86_64')
 url="http://www.videolan.org/vlc/"
 license=('LGPL2.1' 'GPL2')
-replaces=('vlc')
 conflicts=('vlc')
-provides=('vlc')
+provides=('vlc=${pkgver}')
 depends=('a52dec' 'libdvbpsi' 'libxpm' 'libdca' 'qt4' 'libproxy' 
          'sdl_image' 'libdvdnav' 'libtiger' 'lua' 'libmatroska' 
          'zvbi' 'taglib' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 

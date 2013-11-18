@@ -15,9 +15,8 @@ arch=('i686' 'x86_64')
 url="http://www.libpng.org/pub/png/libpng.html"
 license=('custom')
 depends=('zlib' 'sh')
-replaces=('libpng')
 conflicts=('libpng')
-provides=('libpng=1.6.7')
+provides=('libpng=${pkgver}')
 source=(http://downloads.sourceforge.net/sourceforge/$downname/$downname-$pkgver.tar.xz{,.asc}
         http://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-$_apngver-apng.patch.gz)
 md5sums=('7023a9eacd7b6a3eb95761a2f574d456'

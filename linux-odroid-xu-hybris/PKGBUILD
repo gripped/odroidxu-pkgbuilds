@@ -65,7 +65,6 @@ _package() {
   optdepends=('crda: to set the correct wireless channels of your country')
   provides=('kernel26' 'linux=${pkgver}' 'aufs_friendly')
   conflicts=('linux-omap' 'linux-imx6' 'linux-armada370' 'linux-odroid-xu')
-  replaces=('linux-odroid-xu')
   install=${pkgname}.install
 
   cd "${srcdir}/${_srcname}"
@@ -111,7 +110,6 @@ _package-headers() {
   pkgdesc="Header files and scripts for building modules for linux kernel - ${_desc}"
   provides=('linux-headers=${pkgver}')
   conflicts=('linux-headers-omap' 'linux-odroid-xu-headers' 'linux-headers-imx6')
-  replaces=('linux-odroid-xu-headers')
   install -dm755 "${pkgdir}/usr/lib/modules/${_kernver}"
 
   cd "${pkgdir}/usr/lib/modules/${_kernver}"
