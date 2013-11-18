@@ -13,4 +13,6 @@ libhybris-hwcomposer-odroidxu
 
 xbmc-libhybris-frodo (or gotham)
 
+and slim as desktop manager or edit /usr/bin/xbmc-standalone and change there.
+
 gripped - forum.odroid.com
