@@ -1,3 +1,0 @@
-#!/bin/bash
-xdg-su -s screen xbmc-standalone
-

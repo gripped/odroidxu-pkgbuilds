@@ -1,3 +1,0 @@
-KERNEL=="mouse?", GROUP="users", MODE="0660"
-KERNEL=="mice", GROUP="users", MODE="0660"
-KERNEL=="event?", GROUP="users", MODE="0660"
