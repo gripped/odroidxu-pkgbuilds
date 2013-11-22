@@ -1,0 +1,134 @@
+# $Id: PKGBUILD 71695 2012-06-01 13:05:36Z dreisner $
+# Maintainer: Sergej Pupykin <pupykin.s+arch@gmail.com>
+# Contributor: Brad Fanella <bradfanella@archlinux.us>
+# Contributor: [vEX] <niechift.dot.vex.at.gmail.dot.com>
+# Contributor: Zeqadious <zeqadious.at.gmail.dot.com>
+# Contributor: BlackIkeEagle < ike DOT devolder AT gmail DOT com >
+
+_prefix=/usr
+
+pkgname=xbmc-libhybris-gotham-mfc
+pkgver=13.0
+pkgrel=1
+pkgdesc="A software media player and entertainment hub for digital media"
+arch=('i686' 'x86_64')
+url="http://xbmc.org"
+license=('GPL' 'custom')
+depends=('libpulse' 'hicolor-icon-theme' 'fribidi' 'lzo2' 'smbclient' 'libtiff' 'libva'
+         'libpng' 'libcdio' 'yajl' 'libmariadbclient' 'libjpeg-turbo' 'libsamplerate'
+         'glew' 'libssh' 'libmicrohttpd' 'libxrandr' 'sdl_mixer' 'sdl_image' 'python2'
+         'libass' 'libmpeg2' 'libmad' 'libmodplug' 'jasper' 'rtmpdump' 'unzip' 'mesa-demos'
+         'xorg-xdpyinfo' 'libbluray' 'libnfs' 'afpfs-ng' 'libshairport' 'avahi' 'bluez-libs' 'glu'
+         'tinyxml' 'taglib' 'libhybris-hwcomposer-odroidxu' 'screen')
+makedepends=('boost' 'cmake' 'gperf' 'nasm' 'libxinerama' 'zip' 'libcec'
+             'udisks' 'upower' 'mesa' 'doxygen' 'swig' 'java-environment')
+optdepends=('libcec: support for Pulse-Eight USB-CEC adapter'
+            'pulseaudio: pulseaudio support'
+            'lirc: remote controller support'
+            'udisks: automount external drives'
+            'upower: used to trigger suspend functionality'
+            'unrar: access compressed files without unpacking them'
+            'xorg-xinit: autostart xbmc')
+provides=('xbmc')
+conflicts=('xbmc' 'xbmc-libhybris-gotham-hyb' 'xbmc-libhybris-frodo-mfc' 'xbmc-libhybris-frodo-hyb')
+install="${pkgname}.install"
+source=('git://github.com/mdrjr/xbmc.git#branch=odroid-hybris'
+	'android-libs.tar.gz'
+	'11-xbmc-input.rules'
+	'xbmc-standalone'
+	'xbmc-')
+sha256sums=('SKIP'
+            'd3532c6cdda292475172d1612df2bb85b3b28b3600ea41311179e3e10c7662da'
+            'ce2bf48b21f7a72b88ee0aafc27375600ed657cc65924fb4e014afb4b40ea026'
+            '6651e6171a46cab72aae48aa244f3c1a447ec37e1744c38272eea57513183012'
+            '06076255c464927672444f22cf7b59f451f46ee1b30ad04c99ccedea4df5d5ee')
+
+build() {
+  cd "${srcdir}/xbmc"
+
+  # fix lsb_release dependency
+  sed -i -e 's:/usr/bin/lsb_release -d:cat /etc/arch-release:' xbmc/utils/SystemInfo.cpp
+  sed -i -e 's:#include <libsmbclient.h>:#include <samba-4.0/libsmbclient.h>:' xbmc/filesystem/{SmbFile,SMBDirectory}.cpp
+  
+  # Bootstrapping XBMC
+  ./bootstrap
+
+  # Configuring XBMC
+  export PYTHON_VERSION=2  # external python v2
+  export PKG_CONFIG=/usr/bin/pkg-config
+  ./configure --prefix=$_prefix --exec-prefix=$_prefix   \
+    --disable-afpclient \
+    --disable-airplay \
+    --disable-airtunes \
+    --disable-debug \
+    --disable-external-ffmpeg \
+    --disable-gl \
+    --disable-hal \
+    --disable-joystick \
+    --disable-rsxs \
+    --disable-sdl \
+    --disable-vaapi \
+    --disable-vdpau \
+    --disable-x11 \
+    --disable-xrandr \
+    --disable-xvba \
+    --enable-avahi \
+    --enable-egl	\
+    --enable-external-libraries \
+    --enable-exynos5 \
+    --enable-ffmpeg-libvorbis \
+    --enable-gles	\
+    --enable-libcec \
+    --enable-libusb \
+    --enable-neon \
+    --enable-nfs \
+    --enable-optimizations \
+    --enable-pulse \
+    --enable-rtmp \
+    --enable-samba \
+    --enable-texturepacker \
+    --enable-udev \
+    --enable-webserver \
+    --host=armv7a-hardfloat-linux-gnueabi   \
+    --with-cpu=cortex-a15 \
+    --with-platform=hybris \
+  HYBRISEGL_LIBS='-L/usr/lib -lhybris-common -lhybris-eglplatformcommon'   \
+  HYBRISEGL_CFLAGS='-I/usr/include -I/usr/include/hybris/eglplatformcommon'   \
+  LIBHARDWARE_CFLAGS='-I/usr/include'     \
+  LIBHARDWARE_LIBS='-L/usr/lib -lhardware' \
+  CFLAGS="${CFLAGS} -I${srcdir}/android-libs" CXXFLAGS="${CXXFLAGS} -I${srcdir}/android-libs"
+
+  # Now (finally) build
+  make
+}
+
+package() {
+  cd "${srcdir}/xbmc"
+ # Running make install
+  make DESTDIR="${pkgdir}" install
+
+  # run feh with python2
+  sed -i -e 's/python/python2/g' ${pkgdir}${_prefix}/bin/xbmc
+
+  # lsb_release fix
+  sed -i -e 's/which lsb_release &> \/dev\/null/\[ -f \/etc\/arch-release ]/g' "${pkgdir}${_prefix}/bin/xbmc"
+  sed -i -e "s/lsb_release -a 2> \/dev\/null | sed -e 's\/\^\/    \/'/cat \/etc\/arch-release/g" "${pkgdir}${_prefix}/bin/xbmc"
+
+  # Tools
+  #install -D -m 0755 "${srcdir}/xbmc/xbmc-xrandr" "${pkgdir}${_prefix}/share/xbmc/xbmc-xrandr"
+# cheap, not there after configure.
+#  install -D -m 0755 "${srcdir}/xbmc/tools/TexturePacker/TexturePacker" "${pkgdir}${_prefix}/share/xbmc/"
+
+  # Licenses
+  install -d -m 0755 "${pkgdir}${_prefix}/share/licenses/${pkgname}"
+  for licensef in LICENSE.GPL copying.txt; do
+    mv "${pkgdir}${_prefix}/share/doc/xbmc/${licensef}" "${pkgdir}${_prefix}/share/licenses/${pkgname}"
+  done
+
+  # systemd stuff
+#  install -Dm0644 $srcdir/xbmc.service $pkgdir/usr/lib/systemd/system/xbmc.service
+  #gripped
+  install -Dm0644 $srcdir/11-xbmc-input.rules $pkgdir/etc/udev/rules.d/11-xbmc-input.rules
+  install -Dm0755 $srcdir/xbmc- $pkgdir/usr/bin/xbmc
+  install -Dm0755 $srcdir/xbmc-standalone $pkgdir/usr/bin/xbmc-standalone
+  }

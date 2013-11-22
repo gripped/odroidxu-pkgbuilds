@@ -1,0 +1,5 @@
+post_install() {
+  [[ $(type -p gtk-update-icon-cache) ]] && usr/bin/gtk-update-icon-cache -qtf usr/share/icons/hicolor
+  [[ $(type -p update-desktop-database) ]] && usr/bin/update-desktop-database -q usr/share/applications
+  usermod -a -G audio,video,power,network,optical,storage,disk odroid
+}

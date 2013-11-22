@@ -1,0 +1,12 @@
+#!/bin/bash
+systemctl stop slim
+systemctl stop exynos5-hwcomposer.service
+[ -h /dev/log/events ] || android-logs
+pgrep mediasever || hybris-support
+chmod 666 /dev/input/e* /dev/input/m*
+pulseaudio  --system  --disallow-module-loading --disallow-exit -D
+sudo -u odroid /usr/lib/xbmc/xbmc.bin --standalone
+pkill pulseaudio
+systemctl start slim
+sleep 1
+systemctl start exynos5-hwcomposer.service

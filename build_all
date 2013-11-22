@@ -1,0 +1,28 @@
+#!/bin/bash
+for D in *; do
+    if [ -d "${D}" ]; then
+        cd  ${D}
+        makepkg -Asc --noconfirm
+        sudo pacman -U --noconfirm *.pkg.tar.xz && touch build.ok
+        sudo rm -Rv pkg src
+	rm *.xz *.bz2 *.gz
+	rm *.sig
+        cd ..        
+    fi
+done
+esc=`echo -en "\033"`
+cc_red="${esc}[0;31m"
+cc_green="${esc}[0;32m"
+cc_normal=`echo -en "${esc}[m\017"`
+for D in *; do
+    if [ -d "${D}" ]; then
+      cd ${D}
+      if [ -e "build.ok" ]; then
+	echo -e $D  " ${cc_green}OK${cc_normal}"
+      else
+	echo -e $D  " ${cc_red}FAIL${cc_normal}"
+      fi
+      cd ..
+    fi
+done
+
