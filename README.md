@@ -11,10 +11,10 @@ mesa-noegl
 
 libhybris-hwcomposer-odroidxu
 
-xbmc-libhybris-frodo-mfc (or gotham)
+xbmc-libhybris-frodo-{mfc|hyb} (or gotham)
 
 and slim as desktop manager or edit /usr/bin/xbmc-standalone and change there.
 
-(I've made separate pkkbuilds for decoding via mfc or libhybris. Only mfc is working atm)
+(I've made separate pkkbuilds for decoding via mfc or libhybris.)
 
 gripped - forum.odroid.com
