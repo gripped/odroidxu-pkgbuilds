@@ -1,32 +1,32 @@
-# Maintainer: Georges Discry <georges at discry dot be>
-# Modifier; gripped - forum.odroid.com
+# Maintainer: gripped - forum.odroid.com
 
 
 pkgname=libhybris-hwcomposer-odroidxu
 pkgver=1
-pkgrel=2
+pkgrel=3
 _gitname=hybris
 pkgdesc="Use bionic-based HW adaptations in glibc systems"
 arch=('armv7h')
-url=""
-#options=('!libtool')
-license=('MIT')
+url="https://github.com/vamanea/hybris"
+license=('Apache')
 depends=('linux-odroid-xu-hybris')
 provides=('libhybris-hwcomposer-odroidxu')
 source=('git+https://github.com/vamanea/hybris.git'
-	'system.tar.xz'
+	'http://odroidxu.leeharris.me.uk/xu/system-hdmi_blank.tar.bz2'
 	'android-hybris-support.service'
 	'android-log-setup.service'
 	'hybris-support'
 	'android-logs'
-	'10-pvr.rules')
+	'10-pvr.rules'
+	'media_codecs.xml')
 md5sums=('SKIP'
-         'c6850724629f51e69c8f117c594c7b6d'
+         'f8e55771ce3e7a58bedd276f2c3bcef1'
          'c53da16827e00ba8da9a834db27b5b0d'
          '11bc32ee37aea575cf443e2053a49788'
          '49452b06b179956f3fff62bf63437d1f'
          '391cb3c38e4f77d6d906bede06bc30e2'
-         'a878341f15591ff568f0dbb331a2811b')
+         'a878341f15591ff568f0dbb331a2811b'
+         '3dc8a6a4c361eaa72a51e94ee8b85d77')
          
 build() {
   cd "${srcdir}/${_gitname}/hybris"
@@ -44,4 +44,5 @@ package() {
   install -Dm755 ${srcdir}/android-logs ${pkgdir}/usr/bin/android-logs
   install -Dm755 ${srcdir}/hybris-support ${pkgdir}/usr/bin/hybris-support
   install -Dm755 ${srcdir}/10-pvr.rules ${pkgdir}/etc/udev/rules.d/10-pvr.rules
+  install -Dm755 ${srcdir}/media_codecs.xml ${pkgdir}/etc/media_codecs.xml
 }
