@@ -1,0 +1,4 @@
+post_install() {
+	echo "exec startlxde" >> /etc/skel/.xinit.rc
+	echo "export EDITOR=nano" >> /etc/skel/.bashrc
+}
