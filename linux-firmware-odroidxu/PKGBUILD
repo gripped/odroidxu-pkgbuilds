@@ -1,0 +1,56 @@
+# $Id: PKGBUILD 197749 2013-10-29 09:58:12Z thomas $
+# Maintainer: Thomas Bächler <thomas@archlinux.org>
+# Modifier; gripped - forum.odroid.com
+
+pkgname=linux-firmware-odroidxu
+# Commit date + git rev-parse --short origin/master
+pkgver=1
+pkgrel=1
+epoch=1
+pkgdesc="Firmware files for Linux"
+makedepends=('git')
+arch=('any')
+url=""
+license=('GPL2' 'GPL3' 'custom')
+conflicts=('linux-firmware-git'
+           'kernel26-firmware'
+           'ar9170-fw'
+           'iwlwifi-1000-ucode'
+           'iwlwifi-3945-ucode'
+           'iwlwifi-4965-ucode'
+           'iwlwifi-5000-ucode'
+           'iwlwifi-5150-ucode'
+           'iwlwifi-6000-ucode'
+           'rt2870usb-fw'
+           'rt2x00-rt61-fw'
+           'rt2x00-rt71w-fw'
+           'amd-ucode'
+           'linux-firmware')
+replaces=('kernel26-firmware'
+          'ar9170-fw'
+          'iwlwifi-1000-ucode'
+          'iwlwifi-3945-ucode'
+          'iwlwifi-4965-ucode'
+          'iwlwifi-5000-ucode'
+          'iwlwifi-5150-ucode'
+          'iwlwifi-6000-ucode'
+          'rt2870usb-fw'
+          'rt2x00-rt61-fw'
+          'rt2x00-rt71w-fw'
+          'amd-ucode')
+provides=('linux-firmware')
+options=(!strip)
+source=('http://odroidxu.leeharris.me.uk/xu/firmware.tar.xz')
+md5sums=('cb2a922d5d07ae70544813afa4decf2e')
+
+package() {
+  cd "${srcdir}/firmware"
+  # remove not needed Makefile #35236
+  rm Makefile
+  install -d -m755 "${pkgdir}/usr/lib/firmware"
+  cp -a * "${pkgdir}/usr/lib/firmware/"
+  install -d -m755 "${pkgdir}/usr/share/licenses/linux-firmware/"
+  rm -f "${pkgdir}/usr/lib/firmware/"{README*,configure,GPL*}
+  mv "${pkgdir}/usr/lib/firmware"/{LICEN*,WHENCE} "${pkgdir}/usr/share/licenses/linux-firmware/"
+}
+# vim:set ts=2 sw=2 et:
