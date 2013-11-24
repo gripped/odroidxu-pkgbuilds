@@ -3,13 +3,13 @@
 
 pkgname=libhybris-hwcomposer-odroidxu
 pkgver=1
-pkgrel=3
+pkgrel=4
 _gitname=hybris
 pkgdesc="Use bionic-based HW adaptations in glibc systems"
 arch=('armv7h')
 url="https://github.com/vamanea/hybris"
 license=('Apache')
-depends=('linux-odroid-xu-hybris')
+depends=('linux-odroid-xu-hybris' 'linux-firmware-odroidxu')
 provides=('libhybris-hwcomposer-odroidxu')
 source=('git+https://github.com/vamanea/hybris.git'
 	'http://odroidxu.leeharris.me.uk/xu/system-hdmi_blank.tar.bz2'
