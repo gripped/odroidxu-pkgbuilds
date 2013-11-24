@@ -8,18 +8,17 @@ pkgdesc="gripped's lxde customizations"
 arch=('armv7h')
 url=""
 license=('gpl')
-depends=('lxde' 'xorg-xinit')
+depends=('lxde-common' 'xorg-xinit' 'lxde-icon-theme-mod')
 install=install
 source=(''http://odroidxu.leeharris.me.uk/xu/customizations.tar.xz)
-md5sums=('SKIP')
+md5sums=('884cf1f0d36275edba7cf1a272e251b6')
          
 
 
 package() {
-  install -Dm644 ${srcdir}/android-hybris-support.service ${pkgdir}/usr/lib/systemd/system/android-hybris-support.service
-  install -Dm644 ${srcdir}/android-log-setup.service ${pkgdir}/usr/lib/systemd/system/android-log-setup.service 
-  install -Dm755 ${srcdir}/android-logs ${pkgdir}/usr/bin/android-logs
-  install -Dm755 ${srcdir}/hybris-support ${pkgdir}/usr/bin/hybris-support
-  install -Dm755 ${srcdir}/10-pvr.rules ${pkgdir}/etc/udev/rules.d/10-pvr.rules
-  install -Dm755 ${srcdir}/media_codecs.xml ${pkgdir}/etc/media_codecs.xml
+
+  cd "${srcdir}/customizations"
+  install -d -m755 "${pkgdir}/share/lxde/wallpapers/"
+  install -d -m755 "${pkgdir}/etc/skel/.config"
+  cp -av * "${pkgdir}"
 }
