@@ -1,4 +1,12 @@
 post_install() {
-	echo "exec startlxde" >> /etc/skel/.xinit.rc
-	echo "export EDITOR=nano" >> /etc/skel/.bashrc
+	grep "exec startlxde" /etc/skel/.xinitrc || echo "exec startlxde" >> /etc/skel/.xinitrc
+	grep "export EDITOR=nano" /etc/skel/.bashrc || echo "export EDITOR=nano" >> /etc/skel/.bashrc
+	sed -i -e 's:# %wheel ALL=(ALL) ALL:%wheel ALL=(ALL) ALL:' /etc/sudoers
+	sed -i 's:CPPFLAGS="-D_FORTIFY_SOURCE=2":CPPFLAGS="":g' /etc/makepkg.conf
+	sed -i 's:CFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16 -O2 -pipe -fstack-protector --param=ssp-buffer-size=4":CFLAGS="-O3 -pipe -mcpu=cortex-a15 -mfloat-abi=hard -mfpu=neon -ffast-math -ftree-vectorize -mvectorize-with-neon-quad -fstack-protector --param=ssp-buffer-size=4  -D_FORTIFY_SOURCE=2":g' /etc/makepkg.conf
+	sed -i 's:CXXFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16 -O2 -pipe -fstack-protector --param=ssp-buffer-size=4":CXXFLAGS="-O3 -pipe -mcpu=cortex-a15 -mfloat-abi=hard -mfpu=neon -ffast-math -ftree-vectorize -mvectorize-with-neon-quad -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2":g' /etc/makepkg.conf
+	sed -i 's:#MAKEFLAGS="-j2":MAKEFLAGS="-j5":g' /etc/makepkg.conf
+	sed -i 's:load-module module-udev-detect$:load-module module-udev-detect tsched=0:g' /etc/pulse/default.pa
+	sudo mv /etc/pulse/system.pa /etc/pulse/system.pa.orig
+	sudo ln -s /etc/pulse/default.pa /etc/pulse/system.pa
 }
