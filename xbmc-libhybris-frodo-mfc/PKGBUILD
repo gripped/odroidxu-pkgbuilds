@@ -10,7 +10,7 @@
 _prefix=/usr
 pkgname=xbmc-libhybris-frodo-mfc
 pkgver=12.0
-pkgrel=1
+pkgrel=2
 pkgdesc="A software media player and entertainment hub for digital media"
 arch=('i686' 'x86_64')
 url="http://xbmc.org"
@@ -97,7 +97,8 @@ build() {
      HYBRISEGL_CFLAGS='-I/usr/include -I/usr/include/hybris/eglplatformcommon'   \
      LIBHARDWARE_CFLAGS='-I/usr/include'     \
      LIBHARDWARE_LIBS=-'L/usr/lib -lhardware'    \
-    CFLAGS="${CFLAGS} -I${srcdir}/android-libs" CXXFLAGS="${CXXFLAGS} -I${srcdir}/android-libs"
+    CFLAGS="${CFLAGS} -I${srcdir}/android-libs" \
+    CXXFLAGS="${CXXFLAGS} -I${srcdir}/android-libs"
 
   # Now (finally) build
   make

@@ -3,7 +3,7 @@
 
 pkgname=libhybris-hwcomposer-odroidxu
 pkgver=1
-pkgrel=4
+pkgrel=6
 _gitname=hybris
 pkgdesc="Use bionic-based HW adaptations in glibc systems"
 arch=('armv7h')
@@ -26,7 +26,7 @@ md5sums=('SKIP'
          '49452b06b179956f3fff62bf63437d1f'
          '391cb3c38e4f77d6d906bede06bc30e2'
          'a878341f15591ff568f0dbb331a2811b'
-         '3dc8a6a4c361eaa72a51e94ee8b85d77')
+         '654c4efdbfa6830efa859581673942b2')
          
 build() {
   cd "${srcdir}/${_gitname}/hybris"

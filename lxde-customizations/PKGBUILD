@@ -11,7 +11,7 @@ license=('gpl')
 depends=('lxde-common' 'xorg-xinit' 'lxde-icon-theme-mod')
 install=install
 source=(''http://odroidxu.leeharris.me.uk/xu/customizations.tar.xz)
-md5sums=('884cf1f0d36275edba7cf1a272e251b6')
+md5sums=('bff91dd3f469f44e105f7df728f7c2c8')
          
 
 

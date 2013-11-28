@@ -1,12 +1,18 @@
 post_install() {
 	grep "exec startlxde" /etc/skel/.xinitrc || echo "exec startlxde" >> /etc/skel/.xinitrc
 	grep "export EDITOR=nano" /etc/skel/.bashrc || echo "export EDITOR=nano" >> /etc/skel/.bashrc
+	[ ! -e /etc/sudoers.orig ] && cp /etc/sudoers /etc/sudoers.orig
 	sed -i -e 's:# %wheel ALL=(ALL) ALL:%wheel ALL=(ALL) ALL:' /etc/sudoers
+	[ ! -e /etc/makepkg.conf.orig ] && cp /etc/makepkg.conf /etc/makepkg.conf.orig
 	sed -i 's:CPPFLAGS="-D_FORTIFY_SOURCE=2":CPPFLAGS="":g' /etc/makepkg.conf
 	sed -i 's:CFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16 -O2 -pipe -fstack-protector --param=ssp-buffer-size=4":CFLAGS="-O3 -pipe -mcpu=cortex-a15 -mfloat-abi=hard -mfpu=neon -ffast-math -ftree-vectorize -mvectorize-with-neon-quad -fstack-protector --param=ssp-buffer-size=4  -D_FORTIFY_SOURCE=2":g' /etc/makepkg.conf
 	sed -i 's:CXXFLAGS="-march=armv7-a -mfloat-abi=hard -mfpu=vfpv3-d16 -O2 -pipe -fstack-protector --param=ssp-buffer-size=4":CXXFLAGS="-O3 -pipe -mcpu=cortex-a15 -mfloat-abi=hard -mfpu=neon -ffast-math -ftree-vectorize -mvectorize-with-neon-quad -fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2":g' /etc/makepkg.conf
 	sed -i 's:#MAKEFLAGS="-j2":MAKEFLAGS="-j5":g' /etc/makepkg.conf
+	[ ! -e /etc/pulse/default.pa.orig ] && cp /etc/pulse/default.pa /etc/pulse/default.pa.orig
 	sed -i 's:load-module module-udev-detect$:load-module module-udev-detect tsched=0:g' /etc/pulse/default.pa
-	sudo mv /etc/pulse/system.pa /etc/pulse/system.pa.orig
-	sudo ln -s /etc/pulse/default.pa /etc/pulse/system.pa
+	[ ! -e /etc/pulse/system.pa.orig ] && mv /etc/pulse/system.pa /etc/pulse/system.pa.orig
+	[ ! -L /etc/pulse/system.pa ] && ln -s /etc/pulse/default.pa /etc/pulse/system.pa
+	[ ! -e /etc/slim.conf.orig ] && cp /etc/slim.conf /etc/slim.conf.orig
+	sed -i 's:#default_user        simone:default_user        odroid:g' /etc/slim.conf
+	sed -i 's:#auto_login          no:auto_login          yes:g' /etc/slim.conf
 }
