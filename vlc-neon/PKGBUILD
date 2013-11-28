@@ -2,12 +2,12 @@
 # Maintainer: Giovanni Scafora <giovanni@archlinux.org>
 # Contributor: Sarah Hay <sarahhay@mb.sympatico.ca>
 # Contributor: Martin Sandsmark <martin.sandsmark@kde.org>
-# Modifier:gripped - forums.odroid.com
+# Modifier:gripped - forum.odroid.com
 
 pkgname=vlc-neon
 downname=vlc
 pkgver=2.1.0
-pkgrel=5
+pkgrel=6
 pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player"
 arch=('i686' 'x86_64')
 url="http://www.videolan.org/vlc/"
@@ -17,7 +17,7 @@ provides=('vlc=${pkgver}')
 depends=('a52dec' 'libdvbpsi' 'libxpm' 'libdca' 'qt4' 'libproxy' 
          'sdl_image' 'libidn' 'libdvdnav' 'libtiger' 'lua' 'libmatroska' 
          'zvbi' 'taglib' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 
-         'libshout' 'libmad' 'libmpeg2' 'xcb-util-keysyms')
+         'libshout' 'libmad' 'libmpeg2' 'xcb-util-keysyms' 'libtar')
 makedepends=('live-media' 'libnotify' 'libbluray' 'flac' 'kdelibs'
              'libdc1394' 'libavc1394' 'lirc-utils' 'libcaca' 
              'librsvg' 'portaudio' 'libgme' 'xosd' 'projectm' 
