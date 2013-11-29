@@ -4,11 +4,11 @@
 buildarch=4
 
 pkgbase=linux-odroid-xu-hybris
-_commit=e6fa29ee326b02dc4d59c311e6d007201a94334a
+_commit=85f0fa36e8117bd831ee9737d899f3fe5890eaac
 _srcname=linux-${_commit}
 _kernelname=${pkgbase#linux}
 _desc="ODROID-XU-Hybris"
-pkgver=3.4.70
+pkgver=3.4.67
 pkgrel=1
 arch=('armv7h')
 url="http://www.kernel.org/"
@@ -17,8 +17,8 @@ makedepends=('xmlto' 'docbook-xsl' 'kmod' 'inetutils' 'bc' 'git')
 options=('!strip')
 source=("https://github.com/hardkernel/linux/archive/${_commit}.tar.gz"
         'config')
-md5sums=('7f5dedcfe8713af8c7a78718570f7c10'
-         '228ea7729ec13ed2094f646a971f6f51')
+md5sums=('e592f4632893808dc40090d950f3617c'
+         'a9bb87918e78aa2cbc36bbd23c94e770')
 prepare() {
   cd "${srcdir}/${_srcname}"
   cat "${srcdir}/config" > ./.config
