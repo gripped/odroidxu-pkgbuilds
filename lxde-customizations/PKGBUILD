@@ -10,7 +10,7 @@ url=""
 license=('gpl')
 depends=('lxde-common' 'xorg-xinit' 'lxde-icon-theme-mod')
 install=install
-source=(''http://odroidxu.leeharris.me.uk/xu/customizations.tar.xz)
+source=('http://odroidxu.leeharris.me.uk/xu/customizations.tar.xz')
 md5sums=('bff91dd3f469f44e105f7df728f7c2c8')
          
 
@@ -18,7 +18,7 @@ md5sums=('bff91dd3f469f44e105f7df728f7c2c8')
 package() {
 
   cd "${srcdir}/customizations"
-  install -d -m755 "${pkgdir}/share/lxde/wallpapers/"
+  install -d -m755 "${pkgdir}/usr/share/lxde/wallpapers/"
   install -d -m755 "${pkgdir}/etc/skel/.config"
   cp -av * "${pkgdir}"
 }

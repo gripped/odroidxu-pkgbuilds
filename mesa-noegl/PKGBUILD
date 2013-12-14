@@ -9,8 +9,8 @@
 # Modifier; gripped - forum.odroid.com
 
 pkgbase=mesa-noegl
-pkgname=('mesa-noegl' 'mesa-libgl')
-pkgver=9.2.4
+pkgname=('mesa-noegl' 'mesa-libgl-noegl')
+pkgver=10.0.1
 pkgrel=1
 arch=('armv7h')
 makedepends=('python2' 'libxml2' 'libx11' 'glproto' 'libdrm' 'dri2proto' 'libxxf86vm' 'libxdamage'
@@ -19,7 +19,7 @@ url="http://mesa3d.sourceforge.net"
 license=('custom')
 source=(ftp://ftp.freedesktop.org/pub/mesa/${pkgver}/MesaLib-${pkgver}.tar.bz2
         LICENSE)
-md5sums=('e630c0a307cec4f0f70ddd029d2fe084'
+md5sums=('0a72ca5b36046a658bf6038326ff32ed'
          '5c65a0fe315dd347e09b1f2826a1df5a')
 
 build() {
@@ -59,7 +59,7 @@ package_mesa-noegl() {
   pkgdesc="an open-source implementation of the OpenGL specification without egl, gles1, gles2"
   depends=('libdrm' 'libvdpau' 'wayland' 'libxxf86vm' 'libxdamage' 'systemd' 'elfutils' 'llvm-libs')
   optdepends=('opengl-man-pages: for the OpenGL API man pages')
-  provides=('mesa' 'libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
+  provides=("mesa=${pkgver}" 'libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
   conflicts=('mesa' 'libglapi' 'osmesa' 'libgbm')
   replaces=('libglapi' 'osmesa' 'libgbm' 'libgles' 'libegl' 'khrplatform-devel')
 
@@ -72,10 +72,11 @@ package_mesa-noegl() {
   install -m644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/mesa/"
 }
 
-package_mesa-libgl() {
+package_mesa-libgl-noegl() {
   pkgdesc="Mesa 3-D graphics library"
-  depends=("mesa-noegl=${pkgver}")
-  provides=("libgl=${pkgver}")
+  depends=("mesa-noegl")
+  provides=("mesa-libgl=${pkgver}" "libgl=${pkgver}")
+  conflicts=("mesa-libgl")
   replaces=('libgl')
  
   # See FS#26284
