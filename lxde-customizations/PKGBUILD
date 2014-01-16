@@ -3,7 +3,7 @@
 
 pkgname=lxde-customizations
 pkgver=1
-pkgrel=1
+pkgrel=3
 pkgdesc="gripped's lxde customizations"
 arch=('armv7h')
 url=""
