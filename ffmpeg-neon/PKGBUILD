@@ -7,8 +7,8 @@
 
 pkgname=ffmpeg-neon
 downname=ffmpeg
-pkgver=2.1.1
-pkgrel=2
+pkgver=2.1.3
+pkgrel=1
 epoch=1
 pkgdesc='Complete and free Internet live audio and video broadcasting solution'
 arch=('i686' 'x86_64')
@@ -23,14 +23,12 @@ depends=(
 makedepends=('libvdpau' 'yasm')
 conflicts=('ffmpeg')
 provides=('ffmpeg=${pkgver}')
-source=(http://ffmpeg.org/releases/$downname-$pkgver.tar.bz2
-        ffmpeg-2.1.1-freetype2.patch)
-md5sums=('2719ab2b3311ac3775b9cdeb66c54849'
-         '4b5dd079a40f44f4e0d00cdbc9d52ec3')
+source=(http://ffmpeg.org/releases/$downname-$pkgver.tar.bz2)
+md5sums=('711b795bbc7b527c0f4a1828f324fd5a')
 
 prepare() {
   cd $downname-$pkgver
-  patch -p1 -i ../ffmpeg-2.1.1-freetype2.patch
+
 }
 
 build() {
