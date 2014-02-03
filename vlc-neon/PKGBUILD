@@ -7,7 +7,7 @@
 pkgname=vlc-neon
 downname=vlc
 pkgver=2.1.2
-pkgrel=1
+pkgrel=3
 pkgdesc="A multi-platform MPEG, VCD/DVD, and DivX player"
 arch=('i686' 'x86_64')
 url="http://www.videolan.org/vlc/"
