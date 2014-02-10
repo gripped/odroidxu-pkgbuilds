@@ -9,8 +9,8 @@
 
 _prefix=/usr
 pkgname=xbmc-libhybris-frodo-hyb
-pkgver=12.0
-pkgrel=4
+pkgver=12.3
+pkgrel=1
 pkgdesc="A software media player and entertainment hub for digital media"
 arch=('i686' 'x86_64')
 url="http://xbmc.org"
@@ -33,7 +33,7 @@ optdepends=('libcec: support for Pulse-Eight USB-CEC adapter'
 provides=('xbmc')
 conflicts=('xbmc' 'xbmc-libhybris-gotham-hyb' 'xbmc-libhybris-gotham-mfc' 'xbmc-libhybris-frodo-mfc')
 install="${pkgname}.install"
-source=("git://github.com/vamanea/xbmc.git#branch=Frodo-hybris"
+source=("git://github.com/gripped/xbmc.git#branch=Frodo-hybris"
 	'android-libs.tar.gz'
 	'11-xbmc-input.rules'
 	'xbmc-standalone'
@@ -41,7 +41,7 @@ source=("git://github.com/vamanea/xbmc.git#branch=Frodo-hybris"
 sha256sums=('SKIP'
             'd3532c6cdda292475172d1612df2bb85b3b28b3600ea41311179e3e10c7662da'
             'ce2bf48b21f7a72b88ee0aafc27375600ed657cc65924fb4e014afb4b40ea026'
-            '6651e6171a46cab72aae48aa244f3c1a447ec37e1744c38272eea57513183012'
+            'c862701030320de18853b2f6ecf52ec3449a8c218f7e1db6f324e9488f2bd3c7'
             '06076255c464927672444f22cf7b59f451f46ee1b30ad04c99ccedea4df5d5ee')
 
 build() {
