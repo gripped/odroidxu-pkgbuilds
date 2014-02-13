@@ -5,7 +5,7 @@
 pkgname=linux-firmware-odroidxu
 # Commit date + git rev-parse --short origin/master
 pkgver=1
-pkgrel=1
+pkgrel=2
 epoch=1
 pkgdesc="Firmware files for Linux"
 makedepends=('git')
@@ -41,7 +41,7 @@ replaces=('kernel26-firmware'
 provides=('linux-firmware')
 options=(!strip)
 source=('http://odroidxu.leeharris.me.uk/xu/firmware.tar.xz')
-md5sums=('cb2a922d5d07ae70544813afa4decf2e')
+md5sums=('3be3052dce9d17b71c8a93e495fc9cae')
 
 package() {
   cd "${srcdir}/firmware"
