@@ -4,13 +4,13 @@
 
 pkgname=linux-firmware-odroidxu
 # Commit date + git rev-parse --short origin/master
-pkgver=1
-pkgrel=2
 epoch=1
+pkgver=20140316.dec41bc
+pkgrel=1
 pkgdesc="Firmware files for Linux"
 makedepends=('git')
 arch=('any')
-url=""
+url="http://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
 license=('GPL2' 'GPL3' 'custom')
 conflicts=('linux-firmware-git'
            'kernel26-firmware'
@@ -24,8 +24,7 @@ conflicts=('linux-firmware-git'
            'rt2870usb-fw'
            'rt2x00-rt61-fw'
            'rt2x00-rt71w-fw'
-           'amd-ucode'
-           'linux-firmware')
+           'amd-ucode')
 replaces=('kernel26-firmware'
           'ar9170-fw'
           'iwlwifi-1000-ucode'
@@ -40,11 +39,12 @@ replaces=('kernel26-firmware'
           'amd-ucode')
 provides=('linux-firmware')
 options=(!strip)
-source=('http://odroidxu.leeharris.me.uk/xu/firmware.tar.xz')
-md5sums=('3be3052dce9d17b71c8a93e495fc9cae')
+source=('git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git#commit=dec41bce44e0dff6a2c3358a958fadf22bf58858')
+md5sums=('SKIP')
 
 package() {
-  cd "${srcdir}/firmware"
+  cd "${srcdir}/linux-firmware"
+  ln -s s5p-mfc/s5p-mfc-v6.fw mfc_fw.bin
   # remove not needed Makefile #35236
   rm Makefile
   install -d -m755 "${pkgdir}/usr/lib/firmware"
