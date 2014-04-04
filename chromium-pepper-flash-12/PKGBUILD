@@ -1,7 +1,7 @@
 # Maintainer: Justin Dray <justin@dray.be>
 # Modifier:   gripped <forum.odroid.com> 
 
-pkgname=chromium-pepper-flash-armv7h
+pkgname=chromium-pepper-flash-12
 pkgdesc="Google Chrome's Pepper Flash plugin for Chromium on armv7h"
 pkgver=12.0.0.77
 pkgrel=1
@@ -14,7 +14,7 @@ optdepends=('pulseaudio-alsa: For PulseAudio users')
 install=chromium-pepper-flash.install
 source=('license.html::http://www.google.com/chrome/intl/en/eula_text.html'
          "http://odroidxu.leeharris.me.uk/PepperFlash-${pkgver}-armv7h.tar.gz")
-md5sums=('a3a49767c80e92cca63b7a33aadfb2af'
+md5sums=('SKIP'
          '7a7989ff6ec555471e3150d7f4264e32')
 
 package() {
