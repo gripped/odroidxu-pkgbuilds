@@ -13,7 +13,7 @@ arch=('i686' 'x86_64')
 url="http://www.videolan.org/vlc/"
 license=('LGPL2.1' 'GPL2')
 conflicts=('vlc')
-provides=('vlc=${pkgver}')
+provides=("vlc=${pkgver}")
 depends=('a52dec' 'libdvbpsi' 'libxpm' 'libdca' 'qt4' 'libproxy' 
          'sdl_image' 'libidn' 'libdvdnav' 'libtiger' 'lua' 'libmatroska' 
          'zvbi' 'taglib' 'libmpcdec' 'ffmpeg' 'faad2' 'libupnp' 

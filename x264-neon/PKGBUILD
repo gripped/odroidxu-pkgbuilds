@@ -18,7 +18,7 @@ url='http://www.videolan.org/developers/x264.html'
 license=('GPL')
 depends=('glibc')
 makedepends=('yasm' 'git')
-provides=('x264')
+provides=("x264=${pkgver}")
 conflicts=('x264')
 source=(git://git.videolan.org/x264.git#commit=aff928d2)
 md5sums=('SKIP')

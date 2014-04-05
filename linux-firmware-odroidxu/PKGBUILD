@@ -37,7 +37,7 @@ replaces=('kernel26-firmware'
           'rt2x00-rt61-fw'
           'rt2x00-rt71w-fw'
           'amd-ucode')
-provides=('linux-firmware')
+provides=("linux-firmware=${pkgver}")
 options=(!strip)
 source=('git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git#commit=dec41bce44e0dff6a2c3358a958fadf22bf58858')
 md5sums=('SKIP')
