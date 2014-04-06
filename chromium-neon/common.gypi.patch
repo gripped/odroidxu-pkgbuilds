@@ -1,0 +1,29 @@
+--- build/common.gypi	2014-04-06 12:00:22.536314292 +0100
++++ build/common.gypi.new	2014-04-06 12:08:25.426314522 +0100
+@@ -3178,26 +3178,6 @@
+                   '-Wno-abi',
+                 ],
+                 'conditions': [
+-                  ['arm_arch!=""', {
+-                    'cflags': [
+-                      '-march=<(arm_arch)',
+-                    ],
+-                  }],
+-                  ['arm_tune!=""', {
+-                    'cflags': [
+-                      '-mtune=<(arm_tune)',
+-                    ],
+-                  }],
+-                  ['arm_fpu!=""', {
+-                    'cflags': [
+-                      '-mfpu=<(arm_fpu)',
+-                    ],
+-                  }],
+-                  ['arm_float_abi!=""', {
+-                    'cflags': [
+-                      '-mfloat-abi=<(arm_float_abi)',
+-                    ],
+-                  }],
+                   ['arm_thumb==1', {
+                     'cflags': [
+                     '-mthumb',

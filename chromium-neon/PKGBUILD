@@ -1,0 +1,226 @@
+# $Id: PKGBUILD 160354 2012-06-01 12:58:14Z dreisner $
+# Maintainer: Evangelos Foutras <evangelos@foutrelis.com>
+# Contributor: Pierre Schmitz <pierre@archlinux.de>
+# Contributor: Jan "heftig" Steffens <jan.steffens@gmail.com>
+# Contributor: Daniel J Griffiths <ghost1227@archlinux.us>
+# Modifier:   gripped <forum.odroid.com> 
+
+# Building for x86_64 requires lib32-glibc & lib32-zlib from [multilib]. These
+# libraries are linked from the NaCl toolchain, and are only needed during
+# build time.
+
+# ALARM: Kevin Mihelich <kevin@archlinuxarm.org>
+#  - removed NaCl, not for ARM
+#  - adjusted gyp flags for v7h
+#  - patch to fix webrtc code for non-android ARM
+#  - patch (hack) to fix skia
+#  - use system protobuf
+#  - makeflags to -j3, seems to barf higher
+#
+#        moonman <moonman [dot] ca [at] gmail [dot] com>
+#  -added armv6 support
+
+buildarch=4
+
+pkgname=chromium-neon
+_pkgname=chromium
+pkgver=33.0.1750.152
+pkgrel=2
+pkgdesc="The open-source project behind Google Chrome, an attempt at creating a safer, faster, and more stable browser"
+arch=('armv6h' 'armv7h')
+url="http://www.chromium.org/"
+license=('BSD')
+depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'icu'
+         'libgcrypt' 'ttf-font' 'systemd' 'dbus' 'flac' 'opus' 'snappy'
+         'speech-dispatcher' 'pciutils' 'libpulse' 'harfbuzz' 'harfbuzz-icu'
+         'desktop-file-utils' 'hicolor-icon-theme' 'protobuf' 'ffmpeg-neon')
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring'
+             'elfutils' 'subversion')
+optdepends=('kdebase-kdialog: needed for file dialogs in KDE')
+provides=('chromium-browser' 'chromium')
+conflicts=('chromium-browser' 'chromium')
+backup=('etc/chromium/default')
+install=chromium.install
+source=(https://commondatastorage.googleapis.com/chromium-browser-official/$_pkgname-$pkgver.tar.xz
+        chromium.desktop
+        chromium.default
+        chromium-gn-r0.patch
+        chromium.sh
+        arm-webrtc-fix.patch
+        skia.patch
+        v6-ffmpeg.patch
+        chromium-system-ffmpeg-r8.patch
+        common.gypi.patch)
+sha256sums=('9fd462840bee3ae205b0548e8a483f7589beecdb7c6309d4d65425cbf710cc2f'
+            '09bfac44104f4ccda4c228053f689c947b3e97da9a4ab6fa34ce061ee83d0322'
+            '478340d5760a9bd6c549e19b1b5d1c5b4933ebf5f8cfb2b3e2d70d07443fe232'
+            'a1145e83d775101b28dcdceb3ca076fc7e9a4b9f69a1a2236d0c97ad39afb3d3'
+            '4999fded897af692f4974f0a3e3bbb215193519918a1fa9b31ed51e74a2dccb9'
+            '9db0f01517c52e3236ff52e8a664840542a19144a54923ae6aabea3dcfa92c52'
+            '0567b09b91c13389d430630a8dfcda06d5f1a12d6b07f0b48dd418d2543a28d8'
+            'd9e1da23a40bc4afb5187d3fe90f11dfe92c931b1c215990b401ffb3bedf5200'
+            '9c3a31ce42860edce5e2bbae52ccb377f0442ed2e161ed477103f69c3cb7d6b4'
+            '57c225f3e319ea891e55a1cf11b347ebf315c3c0000cbc1f719d64735c8bf9ea')
+
+# Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
+# Note: These are for Arch Linux use ONLY. For your own distribution, please
+# get your own set of keys. Feel free to contact foutrelis@archlinux.org for
+# more information.
+#  - Arch Linux ARM has obtained permission to use the Arch Linux keys.
+_google_api_key=AIzaSyDwr302FpOSkGRpLlUpPThNTDPbXcIn_FM
+_google_default_client_id=413772536636.apps.googleusercontent.com
+_google_default_client_secret=0ZChLK6AxeA3Isu96MkwqDR4
+
+prepare() {
+  cd "$srcdir/$_pkgname-$pkgver"
+
+  patch -Np0 -i "$srcdir/chromium-gn-r0.patch"
+
+  # Fix WebRTC for ARM
+  patch -Np0 -i "$srcdir/arm-webrtc-fix.patch"
+
+  # Fix ffmpeg build for armv6
+  [ "$CARCH" == "armv6h" ] && patch -Np1 -i "$srcdir/v6-ffmpeg.patch"
+
+  # Temp fix for skia
+  patch -Np0 -i "$srcdir/skia.patch"
+  
+  # gripped patch for use_system_ffmpeg=1
+  patch -Np1 -i "../../chromium-system-ffmpeg-r8.patch"
+  # gripped patch to stop -march -mtune being passed. Use our own cflags
+  patch -Np0 -i "$srcdir/common.gypi.patch"
+  
+MAKEFLAGS=-j3
+
+  # Use Python 2
+  find . -type f -exec sed -i -r \
+    -e 's|/usr/bin/python$|&2|g' \
+    -e 's|(/usr/bin/python2)\.4$|\1|g' \
+    {} +
+
+  # There are still a lot of relative calls which need a workaround
+  mkdir "$srcdir/python2-path"
+  ln -s /usr/bin/python2 "$srcdir/python2-path/python"
+}
+
+build() {
+  cd "$srcdir/$_pkgname-$pkgver"
+
+  export PATH="$srcdir/python2-path:$PATH"
+
+  # CFLAGS are passed through release_extra_cflags below
+  export -n CFLAGS CXXFLAGS
+
+  # Silence "locally defined but not used" warnings in Chromium and WebKit
+  CFLAGS+=' -Wno-unused-local-typedefs'
+
+if [ "$CARCH" == "armv6h" ]; then
+arch_specific_flags="
+    -Darmv7=0 \
+    -Darmv6=1 \
+    -Darm_fpu=vfp \
+    -Darm_thumb=0 \
+    -Dv8_can_use_vfp_instructions=false \
+    -Dv8_can_use_vfp2_instructions=true"
+fi
+
+if [ "$CARCH" == "armv7h" ]; then
+arch_specific_flags="
+    -Darmv7=1 \
+    -Darm_fpu=neon"
+fi
+
+  local _chromium_conf=(
+    -Dgoogle_api_key=$_google_api_key
+    -Dgoogle_default_client_id=$_google_default_client_id
+    -Dgoogle_default_client_secret=$_google_default_client_secret
+    -Dwerror=
+    -Dpython_ver=2.7
+    -Dlinux_link_gsettings=1
+    -Dlinux_link_libpci=1
+    -Dlinux_link_libspeechd=1
+    -Dlinux_link_pulseaudio=1
+    -Dlinux_strip_binary=1
+    -Dlinux_use_gold_binary=0
+    -Dlinux_use_gold_flags=0
+    -Drelease_extra_cflags="$CFLAGS -DUSE_EABI_HARDFLOAT"
+    -Dlibspeechd_h_prefix=speech-dispatcher/
+    -Dffmpeg_branding=Chrome
+    -Dproprietary_codecs=1
+    -Duse_system_bzip2=1
+    -Duse_system_flac=1
+    -Duse_system_protobuf=1
+    -Duse_system_ffmpeg=1
+    -Duse_system_harfbuzz=1
+    -Duse_system_icu=1
+    -Duse_system_libevent=1
+    -Duse_system_libjpeg=1
+    -Duse_system_libpng=1
+    -Duse_system_libxml=0
+    -Duse_system_opus=1
+    -Duse_system_snappy=1
+    -Duse_system_ssl=0
+    -Duse_system_xdg_utils=1
+    -Duse_system_yasm=1
+    -Duse_system_zlib=0
+    -Duse_gconf=0
+    -Ddisable_glibc=1
+    -Ddisable_sse2=1
+    -Dtarget_arch=arm
+    -Darm_neon=1
+    -Dlinux_use_tcmalloc=0
+    -Dlogging_like_official_build=1
+    -Ddisable_nacl=1
+    -Dv8_use_arm_eabi_hardfloat=true
+    -Darm_float_abi=hard
+    -Dsysroot=
+    ${arch_specific_flags})
+
+MAKEFLAGS=-j3
+  build/linux/unbundle/replace_gyp_files.py "${_chromium_conf[@]}"
+  build/gyp_chromium -f make --depth=. "${_chromium_conf[@]}"
+## gripped
+## remove -march=armv7-a because it conflicts with -mcpu=cortex-a15
+echo "striping march=armv7-a"
+  grep -rlI "march=armv7-a" . |xargs sed -i 's/-march=armv7-a//g'
+echo "striping mtune=cortex-a8"
+  grep -rlI "mtune=cortex-a8" . |xargs sed -i 's/-mtune=cortex-a8/-mcpu=cortex-a15/g'
+## sqlite doest like -ffast-math
+#  grep -rlI "ffast-math" third_party/sqlite/*.mk |xargs sed -i 's/-ffast-math/-O3/g'
+  make chrome chrome_sandbox BUILDTYPE=Release
+}
+
+package() {
+  cd "$srcdir/$_pkgname-$pkgver"
+
+  install -D out/Release/chrome "$pkgdir/usr/lib/chromium/chromium"
+
+  install -Dm4755 -o root -g root out/Release/chrome_sandbox \
+    "$pkgdir/usr/lib/chromium/chrome-sandbox"
+
+  cp out/Release/*.pak "$pkgdir/usr/lib/chromium/"
+
+  # Allow users to override command-line options
+  install -Dm644 "$srcdir/chromium.default" "$pkgdir/etc/chromium/default"
+
+  cp -a out/Release/locales "$pkgdir/usr/lib/chromium/"
+
+  install -Dm644 out/Release/chrome.1 "$pkgdir/usr/share/man/man1/chromium.1"
+
+  install -Dm644 "$srcdir/chromium.desktop" \
+    "$pkgdir/usr/share/applications/chromium.desktop"
+
+  for size in 22 24 48 64 128 256; do
+    install -Dm644 "chrome/app/theme/chromium/product_logo_$size.png" \
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+  done
+
+  for size in 16 32; do
+    install -Dm644 "chrome/app/theme/default_100_percent/chromium/product_logo_$size.png" \
+      "$pkgdir/usr/share/icons/hicolor/${size}x${size}/apps/chromium.png"
+  done
+
+  install -D "$srcdir/chromium.sh" "$pkgdir/usr/bin/chromium"
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/chromium/LICENSE"
+}
