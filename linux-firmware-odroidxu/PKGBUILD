@@ -1,16 +1,16 @@
 # $Id: PKGBUILD 197749 2013-10-29 09:58:12Z thomas $
-# Maintainer: Thomas BÃ¤chler <thomas@archlinux.org>
+# Maintainer: Thomas Bächler <thomas@archlinux.org>
 # Modifier; gripped - forum.odroid.com
 
 pkgname=linux-firmware-odroidxu
 # Commit date + git rev-parse --short origin/master
-epoch=1
-pkgver=20140316.dec41bc
+pkgver=20140407.dec41bc
 pkgrel=1
+epoch=1
 pkgdesc="Firmware files for Linux"
 makedepends=('git')
 arch=('any')
-url="http://git.kernel.org/?p=linux/kernel/git/firmware/linux-firmware.git;a=summary"
+url=""
 license=('GPL2' 'GPL3' 'custom')
 conflicts=('linux-firmware-git'
            'kernel26-firmware'
@@ -24,7 +24,8 @@ conflicts=('linux-firmware-git'
            'rt2870usb-fw'
            'rt2x00-rt61-fw'
            'rt2x00-rt71w-fw'
-           'amd-ucode')
+           'amd-ucode'
+           'linux-firmware')
 replaces=('kernel26-firmware'
           'ar9170-fw'
           'iwlwifi-1000-ucode'
@@ -37,14 +38,13 @@ replaces=('kernel26-firmware'
           'rt2x00-rt61-fw'
           'rt2x00-rt71w-fw'
           'amd-ucode')
-provides=("linux-firmware=${pkgver}")
+provides=('linux-firmware')
 options=(!strip)
-source=('git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git#commit=dec41bce44e0dff6a2c3358a958fadf22bf58858')
-md5sums=('SKIP')
+source=('http://odroidxu.leeharris.me.uk/xu/firmware.tar.xz')
+md5sums=('3be3052dce9d17b71c8a93e495fc9cae')
 
 package() {
-  cd "${srcdir}/linux-firmware"
-  ln -s s5p-mfc/s5p-mfc-v6.fw mfc_fw.bin
+  cd "${srcdir}/firmware"
   # remove not needed Makefile #35236
   rm Makefile
   install -d -m755 "${pkgdir}/usr/lib/firmware"
