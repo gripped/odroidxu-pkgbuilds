@@ -22,7 +22,7 @@ makedepends=('live-media' 'libnotify' 'libbluray' 'flac' 'kdelibs'
              'libdc1394' 'libavc1394' 'lirc-utils' 'libcaca' 
              'librsvg' 'portaudio' 'libgme' 'xosd' 'projectm' 
              'twolame' 'aalib' 'libmtp' 'libdvdcss' 'gnome-vfs' 
-             'libgoom2' 'libtar' 'vcdimager' 'opus' 'libssh2' 'mesa')
+             'libgoom2' 'libtar' 'vcdimager' 'opus' 'libssh2' 'mesa>=10.1.0-4')
 optdepends=('avahi: for service discovery using bonjour protocol'
             'libnotify: for notification plugin'
             'ncurses: for ncurses interface support'

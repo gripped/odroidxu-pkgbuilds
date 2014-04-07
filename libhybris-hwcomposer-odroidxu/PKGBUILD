@@ -3,7 +3,7 @@
 
 pkgname=libhybris-hwcomposer-odroidxu
 pkgver=1
-pkgrel=6
+pkgrel=9
 _gitname=hybris
 pkgdesc="Use bionic-based HW adaptations in glibc systems"
 arch=('armv7h')
@@ -18,7 +18,8 @@ source=('git+https://github.com/vamanea/hybris.git'
 	'hybris-support'
 	'android-logs'
 	'10-pvr.rules'
-	'media_codecs.xml')
+	'media_codecs.xml'
+	'libhybris.conf')
 md5sums=('SKIP'
          'f8e55771ce3e7a58bedd276f2c3bcef1'
          'c53da16827e00ba8da9a834db27b5b0d'
@@ -26,11 +27,12 @@ md5sums=('SKIP'
          '49452b06b179956f3fff62bf63437d1f'
          '391cb3c38e4f77d6d906bede06bc30e2'
          'a878341f15591ff568f0dbb331a2811b'
-         '654c4efdbfa6830efa859581673942b2')
+         '654c4efdbfa6830efa859581673942b2'
+         'fa2ae2b1b426dc42656fbbfcd57b4018')
          
 build() {
   cd "${srcdir}/${_gitname}/hybris"
-  ./autogen.sh --prefix=/usr --with-default-egl-platform=hwcomposer
+  ./autogen.sh --prefix=/opt/libhybris/usr --with-default-egl-platform=hwcomposer
   make 
 }
 
@@ -43,6 +45,7 @@ package() {
   install -Dm644 ${srcdir}/android-log-setup.service ${pkgdir}/usr/lib/systemd/system/android-log-setup.service 
   install -Dm755 ${srcdir}/android-logs ${pkgdir}/usr/bin/android-logs
   install -Dm755 ${srcdir}/hybris-support ${pkgdir}/usr/bin/hybris-support
-  install -Dm755 ${srcdir}/10-pvr.rules ${pkgdir}/etc/udev/rules.d/10-pvr.rules
-  install -Dm755 ${srcdir}/media_codecs.xml ${pkgdir}/etc/media_codecs.xml
+  install -Dm644 ${srcdir}/10-pvr.rules ${pkgdir}/etc/udev/rules.d/10-pvr.rules
+  install -Dm644 ${srcdir}/media_codecs.xml ${pkgdir}/etc/media_codecs.xml
+  install -Dm644 ${srcdir}/libhybris.conf ${pkgdir}/etc/ld.so.conf.d/libhybris.conf
 }

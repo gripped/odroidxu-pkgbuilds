@@ -1,28 +1,7 @@
 diff -urN a/source/CMakeLists.txt b/source/CMakeLists.txt
 --- a/source/CMakeLists.txt	2014-03-03 14:43:00.000000000 -0700
 +++ b/source/CMakeLists.txt	2014-03-29 22:29:24.983771019 -0600
-@@ -39,10 +39,18 @@
-         set(X64 1)
-         add_definitions(-DX86_64=1)
-     endif()
-+elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "armv5.*")
-+    message(STATUS "Detected ARMV5 system processor")
-+    set(ARMV5 1)
-+    add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=0 -DHAVE_NEON=0)
- elseif(${SYSPROC} STREQUAL "armv6l")
--    message(STATUS "Detected ARM system processor")
--    set(ARM 1)
--    add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=1)
-+    message(STATUS "Detected ARMV6 system processor")
-+    set(ARMV6 1)
-+    add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=1 -DHAVE_NEON=0)
-+elseif(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "armv7l")
-+    message(STATUS "Detected ARMV7 system processor")
-+    set(ARMV7 1)
-+    add_definitions(-DX265_ARCH_ARM=1 -DHAVE_ARMV6=1 -DHAVE_NEON=1)
- else()
-     message(STATUS "CMAKE_SYSTEM_PROCESSOR value `${CMAKE_SYSTEM_PROCESSOR}` is unknown")
-     message(STATUS "Please add this value near ${CMAKE_CURRENT_LIST_FILE}:${CMAKE_CURRENT_LIST_LINE}")
+
 @@ -122,8 +130,8 @@
      if(X86 AND NOT X64)
          add_definitions(-march=i686)

@@ -34,7 +34,7 @@ depends=('gtk2' 'nss' 'alsa-lib' 'xdg-utils' 'bzip2' 'libevent' 'libxss' 'icu'
          'libgcrypt' 'ttf-font' 'systemd' 'dbus' 'flac' 'opus' 'snappy'
          'speech-dispatcher' 'pciutils' 'libpulse' 'harfbuzz' 'harfbuzz-icu'
          'desktop-file-utils' 'hicolor-icon-theme' 'protobuf' 'ffmpeg-neon')
-makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa' 'libgnome-keyring'
+makedepends=('python2' 'perl' 'gperf' 'yasm' 'mesa>=10.1.0-4' 'libgnome-keyring'
              'elfutils' 'subversion')
 optdepends=('kdebase-kdialog: needed for file dialogs in KDE')
 provides=('chromium-browser' 'chromium')

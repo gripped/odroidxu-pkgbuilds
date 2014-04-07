@@ -9,7 +9,7 @@ _prefix=/usr
 
 pkgname=xbmc-libhybris-gotham-mfc
 pkgver=13.0.b3
-pkgrel=1
+pkgrel=2
 pkgdesc="A software media player and entertainment hub for digital media"
 arch=('i686' 'x86_64')
 url="http://xbmc.org"
@@ -21,7 +21,7 @@ depends=('libpulse' 'hicolor-icon-theme' 'fribidi' 'lzo2' 'smbclient' 'libtiff' 
          'xorg-xdpyinfo' 'libbluray' 'libnfs' 'afpfs-ng' 'libshairport' 'avahi' 'bluez-libs' 'glu'
          'tinyxml' 'taglib' 'libhybris-hwcomposer-odroidxu' 'screen')
 makedepends=('boost' 'cmake' 'gperf' 'nasm' 'libxinerama' 'zip' 'libcec'
-             'udisks' 'upower' 'mesa' 'doxygen' 'swig' 'java-environment')
+             'udisks' 'upower' 'mesa>=10.1.0-4' 'doxygen' 'swig' 'java-environment')
 optdepends=('libcec: support for Pulse-Eight USB-CEC adapter'
             'pulseaudio: pulseaudio support'
             'lirc: remote controller support'
@@ -56,6 +56,8 @@ build() {
   # Configuring XBMC
   export PYTHON_VERSION=2  # external python v2
   export PKG_CONFIG=/usr/bin/pkg-config
+  export PKG_CONFIG_PATH="/opt/libhybris/usr/lib/pkgconfig:/usr/lib/pkgconfig"
+  export LD_LIBRARY_PATH="/opt/libhybris/usr/lib:/opt/libhybris/usr/lib/libhybris/:/usr/lib"
   ./configure --prefix=$_prefix --exec-prefix=$_prefix   \
     --disable-afpclient \
     --disable-airplay \
@@ -92,19 +94,22 @@ build() {
     --host=armv7a-hardfloat-linux-gnueabi   \
     --with-cpu=cortex-a15 \
     --with-platform=hybris \
-  HYBRISEGL_LIBS='-L/usr/lib -lhybris-common -lhybris-eglplatformcommon'   \
-  HYBRISEGL_CFLAGS='-I/usr/include -I/usr/include/hybris/eglplatformcommon'   \
-  LIBHARDWARE_CFLAGS='-I/usr/include'     \
-  LIBHARDWARE_LIBS='-L/usr/lib -lhardware' \
-  CFLAGS="${CFLAGS} -I${srcdir}/android-libs -DTARGET_HYBRIS=1"  \
-  CXXFLAGS="${CXXFLAGS} -I${srcdir}/android-libs -DTARGET_HYBRIS=1"
+  HYBRISEGL_LIBS='-L/opt/libhybris/usr/lib -L/opt/libhybris/usr/lib/libhybris/ -lhybris-common -lhybris-eglplatformcommon'   \
+  HYBRISEGL_CFLAGS='-I/opt/libhybris/usr/include -I/opt/libhybris/usr/include/hybris/eglplatformcommon'   \
+  LIBHARDWARE_CFLAGS='-I/opt/libhybris/usr/include'     \
+  LIBHARDWARE_LIBS='-L/opt/libhybris/usr/lib -lhardware' \
+  CFLAGS="${CFLAGS} -L/opt/libhybris/usr/lib -L/opt/libhybris/usr/lib/libhybris/ -I/opt/libhybris/usr/include -I/opt/libhybris/usr/include/hybris -I/opt/libhybris/usr/include/hybris/eglplatformcommon -I${srcdir}/android-libs -DTARGET_HYBRIS=1"  \
+  CXXFLAGS="${CXXFLAGS} -L/opt/libhybris/usr/lib -L/opt/libhybris/usr/lib/libhybris/  -I/opt/libhybris/usr/include -I/opt/libhybris/usr/include/hybris -I/opt/libhybris/usr/include/hybris/eglplatformcommon -I${srcdir}/android-libs -DTARGET_HYBRIS=1"
 
+  sed -i 's|#include "support.h"|#include "utils/support.h"|g' lib/timidity/timidity/common.c
+  sed -i 's|#include "support.h"|#include "utils/support.h"|g' lib/timidity/timidity/timidity.h
   # Now (finally) build
   make
 }
 
 package() {
   cd "${srcdir}/xbmc"
+ 
  # Running make install
   make DESTDIR="${pkgdir}" install
 
