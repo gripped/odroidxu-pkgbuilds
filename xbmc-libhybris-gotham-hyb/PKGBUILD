@@ -38,7 +38,7 @@ source=('git://github.com/gripped/xbmc.git#branch=Gotham-hybris'
 	'xbmc-standalone'
 	'xbmc-')
 sha256sums=('SKIP'
-            'd3532c6cdda292475172d1612df2bb85b3b28b3600ea41311179e3e10c7662da'
+            '902f86e17d1f004b36063d09cec337b3391c4f18f0aa59ede5531e50d8cfe2cf'
             'ce2bf48b21f7a72b88ee0aafc27375600ed657cc65924fb4e014afb4b40ea026'
             'c862701030320de18853b2f6ecf52ec3449a8c218f7e1db6f324e9488f2bd3c7'
             '06076255c464927672444f22cf7b59f451f46ee1b30ad04c99ccedea4df5d5ee')
