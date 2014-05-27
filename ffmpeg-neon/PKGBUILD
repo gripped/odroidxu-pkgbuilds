@@ -6,8 +6,8 @@
 # Modifier; gripped - forum.odroid.com
 
 pkgname=ffmpeg-neon
-downname=ffmpeg
-pkgver=2.2.1
+_downname=ffmpeg
+pkgver=2.2.2
 pkgrel=1
 epoch=1
 pkgdesc='Complete and free Internet live audio and video broadcasting solution'
@@ -23,20 +23,18 @@ depends=(
 makedepends=('yasm')
 conflicts=('ffmpeg')
 provides=('ffmpeg=${pkgver}')
-source=(http://ffmpeg.org/releases/$downname-$pkgver.tar.bz2{,.asc}
-	0001-libx265-Support-API-version-9.patch)
-md5sums=('b8a1ee4964c2638f46fcc803ed453818'
+source=(http://ffmpeg.org/releases/$_downname-$pkgver.tar.bz2{,.asc})
+md5sums=('SKIP'
          'SKIP'
-         '9c277d5d3064602b76a1d5369114d529')
+         'SKIP')
 
 prepare() {
-  cd $downname-$pkgver
-  patch -p1 -i ../0001-libx265-Support-API-version-9.patch
+  cd $_downname-$pkgver
 
 }
 
 build() {
-  cd $downname-$pkgver
+  cd $_downname-$pkgver
 
   ./configure \
     --prefix=/usr \
@@ -89,7 +87,7 @@ build() {
 }
 
 package() {
-  cd $downname-$pkgver
+  cd $_downname-$pkgver
   make DESTDIR="$pkgdir" install install-man
   install -D -m755 tools/qt-faststart "$pkgdir"/usr/bin/qt-faststart
 }
