@@ -7,7 +7,7 @@
 
 _prefix=/usr
 pkgname=xbmc-libhybris-gotham-mfc
-pkgver=13.0.0
+pkgver=13.2
 pkgrel=1
 epoch=1
 pkgdesc="A software media player and entertainment hub for digital media"
